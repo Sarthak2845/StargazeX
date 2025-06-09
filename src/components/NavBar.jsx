@@ -9,10 +9,10 @@ const NavBar = () => {
   ];
 
   return (
-    <nav className='bg-black fixed w-full top-0 left-0 z-50 shadow-2xl shadow-blue-700'>
+    <nav className="bg-black fixed w-full top-0 left-0 z-50 shadow-2xl shadow-blue-700 font-['Orbitron']">
       <div className='container mx-auto flex items-center justify-between py-4 px-6'>
         <motion.div
-          className="text-3xl font-bold bg-clip-text text-transparent"
+          className="text-3xl font-bold bg-clip-text text-transparent "
           style={{
             background: "linear-gradient(to right, #40E0D0, #FF8C00, #FF0080)",
             WebkitBackgroundClip: "text",

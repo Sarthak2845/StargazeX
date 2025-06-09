@@ -9,16 +9,16 @@ const App = () => {
     return <Preloader onFinish={() => setLoading(false)} />;
   }
   return (
-    <>  
-     <StarBackground /> 
-    
-  
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-white">
-        <h1 className="text-4xl font-bold">Welcome to StarGazeX</h1>
-        <p className="mt-4 text-lg">This is a simple React application.</p>
-         <UserProfile />
-      </div>
-    </>
+    <>
+  <div className="fixed inset-0 z-0">
+    <StarBackground />
+  </div>
+  <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-white">
+    <NavBar />
+    <h1 className="text-4xl font-bold">Welcome to StarGazeX</h1>
+    <p className="mt-4 text-lg">This is a simple React application.</p>
+  </div>
+</>
   );
 };
 

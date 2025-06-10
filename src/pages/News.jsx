@@ -53,12 +53,15 @@ const [loading, setLoading] = useState(true);
             key={item.id}
             className="bg-gray-900 rounded-2xl shadow-lg hover:scale-102 transition-transform duration-300 overflow-hidden"
           >
-         <img
-  src={item.image_url || '/public/news-bg.jpg'} // Replace with your actual public image path
+            <img
+  src={item.image_url || '/news-bg.jpg'}
   alt={item.title}
   className="w-full h-48 object-cover"
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = '/news-bg.jpg';
+  }}
 />
-
             <div className="p-4">
               <h2 className="text-xl font-semibold mb-2 font-['Orbitron']">{item.title}</h2>
               <p className="text-sm text-gray-400 mb-2 font-['Poppins']">

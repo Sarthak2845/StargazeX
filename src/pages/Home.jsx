@@ -2,7 +2,6 @@ import React from 'react';
 import GradientText from '../components/GradientText';
 import { CalendarDays, Rocket, Telescope, Newspaper, Brush, Cog } from 'lucide-react';
 import SpotlightCard from '../components/SpotlightCard';
-import PictureOfDay from '../components/PictureOfDay';
 
 const Home = () => {
   return (
@@ -36,7 +35,7 @@ const Home = () => {
       {/* Feature Cards */}
       <div className="flex flex-col md:flex-row flex-wrap items-stretch justify-center gap-6 mt-10 w-full">
         {/* Card 1 */}
-        <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%]" spotlightColor="rgba(255, 1, 132, 0.66)">
+        <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%]" spotlightColor="rgba(255, 1, 132, 0.3)">
           <CalendarDays className="inline m-3" size={60} />
           <h2 className="text-xl sm:text-2xl font-bold font-['Orbitron'] mb-4">Real-Time Space Tracking</h2>
           <p className="text-sm sm:text-lg font-['Poppins']">
@@ -45,7 +44,7 @@ const Home = () => {
         </SpotlightCard>
 
         {/* Card 2 */}
-        <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%]" spotlightColor="rgba(0, 255, 243, 0.66)">
+        <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%]" spotlightColor="rgba(0, 255, 243, 0.3)">
           <Telescope className="inline m-3" size={60} />
           <h2 className="text-xl sm:text-2xl font-bold font-['Orbitron'] mb-4">Local Stargazing Events</h2>
           <p className="text-sm sm:text-lg font-['Poppins']">
@@ -54,7 +53,7 @@ const Home = () => {
         </SpotlightCard>
 
         {/* Card 3 */}
-        <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%]" spotlightColor="rgba(73, 0, 255, 0.78)">
+        <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%]" spotlightColor="rgba(73, 0, 255, 0.3)">
           <Newspaper className="inline m-3" size={60} />
           <h2 className="text-xl sm:text-2xl font-bold font-['Orbitron'] mb-4">Space News Feed</h2>
           <p className="text-sm sm:text-lg font-['Poppins']">
@@ -70,7 +69,7 @@ const Home = () => {
 
       <div className="flex flex-col md:flex-row flex-wrap items-stretch justify-center gap-6 mt-10 w-full">
         {/* Frontend */}
-        <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%] flex flex-col items-center justify-center" spotlightColor="rgba(197, 196, 196, 0.35)">
+        <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%] flex flex-col items-center justify-center" spotlightColor="rgba(197, 196, 196, 0.3)">
           <Brush className="inline m-3" size={60} />
           <h2 className="text-xl sm:text-2xl font-bold font-['Orbitron'] mb-4 text-center">FrontEnd</h2>
           <div className="flex flex-wrap gap-3 justify-center">
@@ -88,7 +87,7 @@ const Home = () => {
         </SpotlightCard>
 
         {/* Backend */}
-        <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%] flex flex-col items-center justify-center" spotlightColor="rgba(197, 196, 196, 0.35)">
+        <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%] flex flex-col items-center justify-center" spotlightColor="rgba(197, 196, 196, 0.3)">
           <Cog className="inline m-3" size={60} />
           <h2 className="text-xl sm:text-2xl font-bold font-['Orbitron'] mb-4 text-center">BackEnd</h2>
           <div className="flex flex-wrap gap-3 justify-center">
@@ -105,7 +104,6 @@ const Home = () => {
           </div>
         </SpotlightCard>
       </div>
-      <PictureOfDay/>
     </div>
   );
 };

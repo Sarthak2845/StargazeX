@@ -7,6 +7,7 @@ import NavBar from './components/NavBar';
 import Home from './pages/Home';
 import Footer from './components/Footer';
 import News from './pages/News';
+import Telescope from './pages/Telescope';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -28,8 +29,10 @@ const App = () => {
         
         <main className="flex-grow">
           <Routes>
+            <Route path="/login" element={<UserProfile />} />
             <Route path="/" element={<Home />} />
             <Route path="/news" element={<News />} />
+            <Route path="/telescope" element={<Telescope />} />
             {/* Add more routes here */}
           </Routes>
         </main>

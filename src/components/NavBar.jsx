@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Menu } from 'lucide-react';
+import { link } from 'motion/react-client';
+import Telescope from '../pages/Telescope';
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,6 +11,9 @@ const NavBar = () => {
     { name: 'Celestial Events', link: '/celestial-events' },
     { name: 'Events', link: '/events' },
     { name: 'News', link: '/news' },
+    {
+      name:"Telescope",link:'/telescope'
+    }
   ];
 
   return (

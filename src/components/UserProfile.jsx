@@ -1,51 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import { initializeApp } from 'firebase/app';
+import React, { useEffect, useState } from 'react';
+import { auth } from './firebase';
 import {
-  getAuth,
   GoogleAuthProvider,
   signInWithPopup,
-  onAuthStateChanged
+  onAuthStateChanged,
+  signOut,
 } from 'firebase/auth';
 import axios from 'axios';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBcoyI-35jCBD4HvKmOJTp0IWNUhsKmMzQ",
-  authDomain: "myfirstproject-178f5.firebaseapp.com",
-  projectId: "myfirstproject-178f5",
-  storageBucket: "myfirstproject-178f5.firebasestorage.app",
-  messagingSenderId: "384664206421",
-  appId: "1:384664206421:web:eb9d8ac710a62e0b2c68dc",
-  measurementId: "G-XDPWET92Z5"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 export default function UserProfile() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
 
   const fetchProfile = async (token) => {
     try {
       const res = await axios.get('http://localhost:3000/api/user/profile', {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log('Fetched profile:', res.data);
       setProfile(res.data);
     } catch (err) {
       console.error('Failed to fetch profile:', err);
+      if (err.response?.status === 401) {
+        console.warn('Token expired, signing out.');
+        await signOut(auth);
+        sessionStorage.removeItem('token');
+        setProfile(null);
+      }
     }
   };
 
-  // 🔁 Check if user already logged in
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         const token = await user.getIdToken();
-        localStorage.setItem('token', token); // Save token
-        fetchProfile(token);
+        sessionStorage.setItem('token', token);
+        await fetchProfile(token);
       }
+      setAuthChecked(true);
     });
 
     return () => unsubscribe();
@@ -57,7 +51,7 @@ export default function UserProfile() {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       const token = await user.getIdToken();
-      localStorage.setItem('token', token); // Save token after login
+      sessionStorage.setItem('token', token);
 
       await axios.post(
         'http://localhost:3000/api/user/register',
@@ -65,31 +59,48 @@ export default function UserProfile() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      fetchProfile(token);
+      await fetchProfile(token);
     } catch (err) {
-      console.error('Error during login or registration:', err);
-      alert('Login failed.');
+      console.error('Login failed:', err);
     } finally {
       setLoading(false);
     }
   };
 
-  return (
-    <div className="p-6 max-w-md mx-auto text-center">
-      <button
-        onClick={handleLogin}
-        className="bg-cyan-100 text-black px-5 py-2 rounded-lg shadow hover:bg-gray-200"
-      >
-        {loading ? 'Signing in...' : 'Sign In with Google'}
-      </button>
+  const handleLogout = async () => {
+    await signOut(auth);
+    sessionStorage.removeItem('token');
+    setProfile(null);
+  };
 
-      {profile && (
-        <div className="mt-6 bg-white text-black p-4 rounded shadow-md text-left">
-          <h2 className="text-xl font-semibold mb-2">👤 User Profile</h2>
-          <p><strong>Name:</strong> {profile.name}</p>
-          <p><strong>Email:</strong> {auth.currentUser?.email}</p>
-          <p><strong>UID:</strong> {auth.currentUser?.uid}</p>
-        </div>
+  return (
+    <div className="p-6 max-w-md mx-auto text-center text-white">
+      {!profile ? (
+        <button
+          onClick={handleLogin}
+          className="bg-cyan-700 hover:bg-cyan-600 text-white px-5 py-2 rounded-lg shadow"
+        >
+          {loading ? 'Signing in...' : 'Sign In with Google'}
+        </button>
+      ) : (
+        <>
+          <div className="mt-6 bg-gray-900 text-white p-4 rounded shadow text-left border border-gray-700">
+            <h2 className="text-xl font-semibold mb-2">👤 User Profile</h2>
+            <p><strong>Name:</strong> {profile.name}</p>
+            <p><strong>Email:</strong> {auth.currentUser?.email}</p>
+            <p><strong>UID:</strong> {auth.currentUser?.uid}</p>
+            <button
+              onClick={handleLogout}
+              className="mt-4 bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded"
+            >
+              Sign Out
+            </button>
+          </div>
+        </>
+      )}
+
+      {authChecked && !profile && !loading && (
+        <p className="mt-4 text-gray-400">Please sign in to view your profile.</p>
       )}
     </div>
   );

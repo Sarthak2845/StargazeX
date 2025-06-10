@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import LoadingCard from '../components/LoadingCard';
+import PictureOfDay from '../components/PictureOfDay';
 const NewsPage = () => {
   const [news, setNews] = useState([]);
 const [loading, setLoading] = useState(true);
@@ -45,7 +46,22 @@ const [loading, setLoading] = useState(true);
           </p>
         </div>
       </div>
-
+    <div className='flex justify-center items-center m-8 flex-col'>
+<h2
+  className="relative text-5xl sm:text-6xl lg:text-7xl font-extrabold font-['Orbitron'] text-center mb-8
+             bg-clip-text text-transparent transition-colors duration-300
+             after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0
+             after:bg-purple-600 after:transition-all after:duration-300 hover:after:w-full"
+  style={{
+    background: 'linear-gradient(to left, #ffff00, #ff8000, #ff0080, #ff00ff)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+  }}
+>
+  Picture Of Day
+</h2>
+<PictureOfDay />
+    </div>
       {/* News Cards Section */}
       <div className="px-4 py-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {loading ? Array.from({ length: 6 }, (_, index) => <LoadingCard key={index} />) : news.map((item) => (

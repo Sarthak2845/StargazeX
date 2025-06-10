@@ -2,6 +2,7 @@ import React from 'react';
 import GradientText from '../components/GradientText';
 import { CalendarDays, Rocket, Telescope, Newspaper, Brush, Cog } from 'lucide-react';
 import SpotlightCard from '../components/SpotlightCard';
+import PictureOfDay from '../components/PictureOfDay';
 
 const Home = () => {
   return (
@@ -104,6 +105,7 @@ const Home = () => {
           </div>
         </SpotlightCard>
       </div>
+      <PictureOfDay/>
     </div>
   );
 };

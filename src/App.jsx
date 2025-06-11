@@ -11,6 +11,7 @@ import Telescope from './pages/Telescope';
 import Events from './pages/Events';
 import StargazingConditions from './pages/StargazingConditions';
 import AuthRoute from './components/AuthRoute';
+import SolarSystem from './pages/SolarSytem';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -36,6 +37,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/news" element={<News />} />
             <Route path="/stargazing" element={<StargazingConditions />} />
+            <Route path="/solarsystem" element={<SolarSystem />} />
             <Route path="/events" element={
               <AuthRoute>
                 <Events />

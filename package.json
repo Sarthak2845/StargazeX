@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/drei": "^10.2.0",
+    "@react-three/fiber": "^9.1.2",
     "@tailwindcss/vite": "^4.1.8",
     "axios": "^1.9.0",
     "firebase": "^11.9.0",
@@ -21,6 +23,7 @@
     "react-router-dom": "^7.6.2",
     "react-tsparticles": "^2.12.2",
     "tailwindcss": "^4.1.8",
+    "three": "^0.177.0",
     "tsparticles": "^3.8.1",
     "tsparticles-preset-stars": "^2.12.0"
   },

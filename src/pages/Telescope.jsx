@@ -5,7 +5,10 @@ import { auth } from '../components/firebase';
 export default function TelescopeManager() {
   const [types, setTypes] = useState([]);
   const [myTelescopes, setMyTelescopes] = useState([]);
+  const [allTelescopes, setAllTelescopes] = useState([]);
   const [form, setForm] = useState({
+    name: '',
+    location: '',
     type: '',
     model: '',
     aperture: '',
@@ -22,6 +25,7 @@ export default function TelescopeManager() {
   useEffect(() => {
     fetchTelescopeTypes();
     fetchMyTelescopes();
+    fetchAllTelescopes();
   }, []);
 
   const fetchTelescopeTypes = async () => {
@@ -36,12 +40,24 @@ export default function TelescopeManager() {
   const fetchMyTelescopes = async () => {
     try {
       const token = await getToken();
-      const res = await axios.get('http://localhost:3000/api/telescope/my-telescope', {
-        headers: { Authorization: `Bearer ${token}` }
+      const res = await axios.get('http://localhost:3000/api/telescope/my-telescopes', {
+        headers: { Authorization: `Bearer ${token}`,'Cache-Control': 'no-store',
+    'Pragma': 'no-cache',
+    'Expires': '0' }
       });
+      console.log('Fetched telescopes:', res.data);
       setMyTelescopes(res.data);
     } catch (err) {
       console.error('Failed to fetch my telescopes:', err);
+    }
+  };
+
+  const fetchAllTelescopes = async () => {
+    try {
+      const res = await axios.get('http://localhost:3000/api/telescope/all');
+      setAllTelescopes(res.data);
+    } catch (err) {
+      console.error('Failed to fetch all telescopes:', err);
     }
   };
 
@@ -55,8 +71,16 @@ export default function TelescopeManager() {
           headers: { Authorization: `Bearer ${token}` }
         }
       );
-      setForm({ type: '', model: '', aperture: '', focalLength: '' });
+      setForm({
+        name: '',
+        location: '',
+        type: '',
+        model: '',
+        aperture: '',
+        focalLength: ''
+      });
       fetchMyTelescopes();
+      fetchAllTelescopes();
     } catch (err) {
       console.error('Registration failed:', err);
     }
@@ -79,6 +103,20 @@ export default function TelescopeManager() {
       <div className="bg-gray-900 p-6 rounded-xl shadow-md">
         <h2 className="text-2xl font-bold mb-4">📡 Register Telescope</h2>
         <div className="space-y-3">
+          <input
+            name="name"
+            placeholder="Telescope Name"
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            className={inputClass}
+          />
+          <input
+            name="location"
+            placeholder="Location"
+            value={form.location}
+            onChange={(e) => setForm({ ...form, location: e.target.value })}
+            className={inputClass}
+          />
           <select
             name="type"
             value={form.type}
@@ -129,7 +167,23 @@ export default function TelescopeManager() {
           <ul className="list-disc pl-6 space-y-1">
             {myTelescopes.map(t => (
               <li key={t.id}>
-                <span className="font-medium">{t.model}</span> ({t.type}) — {t.aperture}mm, {t.focalLength}mm
+                <span className="font-medium">{t.name}</span> — {t.model} ({t.type}) at {t.location}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      {/* All Telescopes */}
+      <div className="bg-gray-900 p-6 rounded-xl shadow-md">
+        <h2 className="text-2xl font-bold mb-4">🌍 All Telescopes</h2>
+        {allTelescopes.length === 0 ? (
+          <p className="text-gray-400">No telescopes found in the system.</p>
+        ) : (
+          <ul className="list-disc pl-6 space-y-1">
+            {allTelescopes.map(t => (
+              <li key={t.id}>
+                <span className="font-medium">{t.name}</span> — {t.model} ({t.type}) at {t.location}
               </li>
             ))}
           </ul>

@@ -74,7 +74,7 @@ export default function UserProfile() {
   };
 
   return (
-    <div className="p-6 max-w-md mx-auto text-center text-white">
+    <div className="p-6 max-w-md mx-auto text-center text-white mt-24">
       {!profile ? (
         <button
           onClick={handleLogin}

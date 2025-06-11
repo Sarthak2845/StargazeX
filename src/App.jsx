@@ -8,6 +8,9 @@ import Home from './pages/Home';
 import Footer from './components/Footer';
 import News from './pages/News';
 import Telescope from './pages/Telescope';
+import Events from './pages/Events';
+import StargazingConditions from './pages/StargazingConditions';
+import AuthRoute from './components/AuthRoute';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -32,8 +35,17 @@ const App = () => {
             <Route path="/login" element={<UserProfile />} />
             <Route path="/" element={<Home />} />
             <Route path="/news" element={<News />} />
-            <Route path="/telescope" element={<Telescope />} />
-            {/* Add more routes here */}
+            <Route path="/stargazing" element={<StargazingConditions />} />
+            <Route path="/events" element={
+              <AuthRoute>
+                <Events />
+              </AuthRoute>
+            } />
+            <Route path="/telescope" element={
+              <AuthRoute>
+                <Telescope />
+              </AuthRoute>
+            } />
           </Routes>
         </main>
 
@@ -44,8 +56,4 @@ const App = () => {
 };
 
 export default App;
-
-
-
-
 

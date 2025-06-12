@@ -31,7 +31,7 @@ const App = () => {
       <div className="relative z-10 flex flex-col min-h-screen text-white">
         <NavBar />
         
-        <main className="flex-grow">
+        <main className="flex-grow font-['Poppins']">
           <Routes>
             <Route path="/login" element={<UserProfile />} />
             <Route path="/" element={<Home />} />

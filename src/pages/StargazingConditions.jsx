@@ -180,13 +180,18 @@ export default function StargazingConditions() {
                     <h3 className="font-semibold mb-2">Weather Conditions</h3>
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       <div>
-                        <p><span className="text-gray-400">Temperature:</span> {conditions.weather.temperature}°C</p>
-                        <p><span className="text-gray-400">Cloud Cover:</span> {conditions.weather.cloudCover}%</p>
+                        <p><span className="text-gray-400">Temperature:</span> {conditions.weather.temperature}</p>
+                        <p><span className="text-gray-400">Cloud Cover:</span> {conditions.weather.cloudCover}</p>
                       </div>
                       <div>
-                        <p><span className="text-gray-400">Humidity:</span> {conditions.weather.humidity}%</p>
-                        <p><span className="text-gray-400">Wind:</span> {conditions.weather.windSpeed} km/h</p>
+                        <p><span className="text-gray-400">Humidity:</span> {conditions.weather.humidity}</p>
+                        <p><span className="text-gray-400">Wind:</span> {conditions.weather.windSpeed}</p>
+          
                       </div>
+                      <div>
+                        <p className='text-gray-400'>Moon Phase: <span className='text-white'>{conditions.weather.moonPhase}</span></p>
+                      </div>
+      
                     </div>
                   </div>
                 )}
@@ -202,21 +207,24 @@ export default function StargazingConditions() {
                             <th className="pb-2">Object</th>
                             <th className="pb-2">Type</th>
                             <th className="pb-2">Visibility</th>
+                            <th className="pb-2">Direction</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {conditions.celestialObjects.map((obj, i) => (
-                            <tr key={i} className="border-t border-gray-700">
-                              <td className="py-2">{obj.name}</td>
-                              <td className="py-2">{obj.type}</td>
-                              <td className="py-2">
-                                <span className={getQualityColor(obj.visibility)}>
-                                  {obj.visibility}
-                                </span>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
+  {conditions.celestialObjects.map((obj, i) => (
+    <tr key={i} className="border-t border-gray-700">
+      <td className="py-2">{obj.name}</td>
+      <td className="py-2 capitalize">{obj.type}</td>
+      <td className="py-2">
+        <span className={getQualityColor(obj.visibility)}>
+          {obj.visibility}
+        </span>
+      </td>
+      <td className="py-2">{obj.direction}</td> {/* ✅ Direction column */}
+    </tr>
+  ))}
+</tbody>
+
                       </table>
                     </div>
                   </div>

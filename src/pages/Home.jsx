@@ -2,7 +2,7 @@ import React from 'react';
 import GradientText from '../components/GradientText';
 import { CalendarDays, Rocket, Telescope, Newspaper, Brush, Cog } from 'lucide-react';
 import SpotlightCard from '../components/SpotlightCard';
-
+import { Link } from 'react-router';
 const Home = () => {
   return (
     <div className="flex flex-col items-center justify-center px-4 sm:px-6 md:px-12 lg:px-20 py-10 pt-24 max-w-screen-xl mx-auto">
@@ -23,9 +23,11 @@ const Home = () => {
       </p>
 
       {/* CTA Button */}
-      <button className="bg-gradient-to-r from-[#39ff14] to-[#00d7ff] text-black font-bold py-2 px-6 rounded hover:scale-105 transition-transform duration-300 mt-4 font-['Poppins']">
-        Get Started Now <Rocket className="inline ml-2" />
-      </button>
+<Link to="/login">
+  <button className="bg-gradient-to-r from-[#39ff14] to-[#00d7ff] text-black font-bold py-2 px-6 rounded hover:scale-105 transition-transform duration-300 mt-4 font-['Poppins'] cursor-pointer">
+    Get Started Now <Rocket className="inline ml-2" />
+  </button>
+</Link>
 
       {/* Why Section */}
       <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-['Orbitron'] mt-16 text-center">

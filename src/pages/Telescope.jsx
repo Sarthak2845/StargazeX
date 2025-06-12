@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { auth } from '../components/firebase';
-import { Telescope, MoonStar, Earth, MapPin, Phone } from 'lucide-react';
 import Popup from '../components/Popup';
+
+// Import components
+import TelescopeIntro from '../components/telescope/TelescopeIntro';
+import TelescopeForm from '../components/telescope/TelescopeForm';
+import MyTelescopes from '../components/telescope/MyTelescopes';
+import AllTelescopes from '../components/telescope/AllTelescopes';
+import TelescopeRecommendations from '../components/telescope/TelescopeRecommendations';
 
 export default function TelescopeManager() {
   const [types, setTypes] = useState([]);
@@ -149,9 +155,6 @@ export default function TelescopeManager() {
   };
 
   const inputClass = "w-full p-2 rounded bg-gray-800 text-white border border-gray-600 placeholder-gray-400";
-  
-  // Space-themed CSS classes
-  const cardClass = "p-6 rounded-xl shadow-md bg-[#020e1d] border-2 border-blue-600 relative before:absolute before:inset-0 before:-z-10 before:rounded-xl before:bg-gradient-to-r before:from-pink-500 before:via-red-500 before:to-orange-500";
   const buttonGradient = "bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 px-4 py-2 rounded text-white";
 
   const closePopup = () => {
@@ -166,215 +169,31 @@ export default function TelescopeManager() {
         isVisible={popup.visible} 
         onClose={closePopup} 
       />
-      {/* Feature Introduction */}
-      <div className="bg-[#020e1d] p-6 rounded-xl shadow-md  relative border-2 border-blue-600">
-        <h1 className="text-3xl font-bold mb-3 font-['Orbitron'] text-center text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-red-500 to-orange-500">Telescope Sharing Network</h1>
-        <p className="mb-3">Not everyone has access to a telescope, but the night sky belongs to us all. Our telescope sharing network connects astronomy enthusiasts with telescope owners in their area.</p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-          <div className="bg-[#041b11] p-4 rounded-lg border-2 border-green-500">
-            <h3 className="text-xl font-semibold mb-2"><Telescope className='inline-block' size={30}/> For Telescope Owners</h3>
-            <p>Register your telescope and share your passion for astronomy with others. Set your own availability and terms for sharing your equipment.</p>
-          </div>
-          <div className="bg-[#041b11] p-4 rounded-lg border-2 border-green-500">
-            <h3 className="text-xl font-semibold mb-2"><MoonStar className='inline-block' size={30}/> For Stargazers</h3>
-            <p>Find telescopes available in your area. Connect with owners to arrange viewing sessions or short-term rentals for your stargazing adventures.</p>
-          </div>
-        </div>
-      </div>
       
-      {/* Register Telescope */}
-      <div className={cardClass}>
-        <h2 className="text-2xl font-bold mb-4"><Telescope className='inline-block' size={30}/> Register Telescope</h2>
-        <p className="text-sm text-red-400 mb-4">* Required fields</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex flex-col">
-            <div className="flex items-center mb-1">
-              <label className="text-sm text-red-500 mr-1">*</label>
-              <label className="text-sm">Telescope Name</label>
-            </div>
-            <input
-              name="name"
-              placeholder="Telescope Name"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className={`${inputClass} ${errors.name ? 'border-red-500' : ''}`}
-            />
-            {errors.name && <span className="text-red-500 text-xs mt-1">{errors.name}</span>}
-          </div>
-          
-          <div className="flex flex-col">
-            <div className="flex items-center mb-1">
-              <label className="text-sm text-red-500 mr-1">*</label>
-              <label className="text-sm">Location</label>
-            </div>
-            <input
-              name="location"
-              placeholder="Location"
-              value={form.location}
-              onChange={(e) => setForm({ ...form, location: e.target.value })}
-              className={`${inputClass} ${errors.location ? 'border-red-500' : ''}`}
-            />
-            {errors.location && <span className="text-red-500 text-xs mt-1">{errors.location}</span>}
-          </div>
-          
-          <div className="flex flex-col">
-            <div className="flex items-center mb-1">
-              <label className="text-sm text-red-500 mr-1">*</label>
-              <label className="text-sm">Type</label>
-            </div>
-            <select
-              name="type"
-              value={form.type}
-              onChange={(e) => setForm({ ...form, type: e.target.value })}
-              className={`${inputClass} ${errors.type ? 'border-red-500' : ''}`}
-            >
-              <option value="">Select Type</option>
-              {types.map(t => (
-                <option key={t.id} value={t.id}>{t.name}</option>
-              ))}
-            </select>
-            {errors.type && <span className="text-red-500 text-xs mt-1">{errors.type}</span>}
-          </div>
-          
-          <div className="flex flex-col">
-            <div className="flex items-center mb-1">
-              <label className="text-sm text-red-500 mr-1">*</label>
-              <label className="text-sm">Model</label>
-            </div>
-            <input
-              name="model"
-              placeholder="Model"
-              value={form.model}
-              onChange={(e) => setForm({ ...form, model: e.target.value })}
-              className={`${inputClass} ${errors.model ? 'border-red-500' : ''}`}
-            />
-            {errors.model && <span className="text-red-500 text-xs mt-1">{errors.model}</span>}
-          </div>
-          
-          <div className="flex flex-col">
-            <div className="flex items-center mb-1">
-              <label className="text-sm text-red-500 mr-1">*</label>
-              <label className="text-sm">Contact Info</label>
-            </div>
-            <input
-              name="contactinfo"
-              placeholder="Contact Info"
-              value={form.contactinfo}
-              onChange={(e) => setForm({ ...form, contactinfo: e.target.value })}
-              className={`${inputClass} ${errors.contactinfo ? 'border-red-500' : ''}`}
-            />
-            {errors.contactinfo && <span className="text-red-500 text-xs mt-1">{errors.contactinfo}</span>}
-          </div>
-          
-          <div className="flex flex-col">
-            <div className="flex items-center mb-1">
-              <label className="text-sm">Aperture (optional)</label>
-            </div>
-            <input
-              name="aperture"
-              placeholder="Aperture (optional)"
-              value={form.aperture}
-              onChange={(e) => setForm({ ...form, aperture: e.target.value })}
-              className={inputClass}
-            />
-          </div>
-          
-          <div className="flex flex-col">
-            <div className="flex items-center mb-1">
-              <label className="text-sm">Focal Length (optional)</label>
-            </div>
-            <input
-              name="focalLength"
-              placeholder="Focal Length (optional)"
-              value={form.focalLength}
-              onChange={(e) => setForm({ ...form, focalLength: e.target.value })}
-              className={inputClass}
-            />
-          </div>
-        </div>
-        <button
-          onClick={handleRegister}
-          className={`${buttonGradient} w-fit mt-4 cursor-pointer hover:scale-105 transition-transform`}
-        >
-          Register Telescope
-        </button>
-      </div>
-
-      {/* My Telescopes */}
-      <div className={cardClass}>
-        <h2 className="text-2xl font-bold mb-4"><Telescope className='inline-block' size={30}/> My Telescopes</h2>
-        {myTelescopes.length === 0 ? (
-          <p className="text-gray-400">You haven't registered any telescopes yet.</p>
-        ) : (
-          <ul className="list-disc pl-6 space-y-1">
-            {myTelescopes.map(t => (
-              <li key={t.id}>
-                <span className="font-medium">{t.name}</span> — {t.model} ({t.type}) at {t.location}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-
-      {/* All Telescopes */}
-      <div className={cardClass}>
-        <h2 className="text-2xl font-bold mb-4"><Earth  className='inline-block' size={30}/> All Telescopes</h2>
-        {allTelescopes.length === 0 ? (
-          <p className="text-gray-400">No telescopes found in the system.</p>
-        ) : (
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {allTelescopes.map(telescope => (
-              <li
-                key={telescope.id}
-                className="p-4 rounded-xl shadow-md bg-[#041b11] text-white hover:bg-[#071b04] transition border-2 border-green-600 relative before:absolute before:inset-0 before:-z-10 before:rounded-xl before:bg-gradient-to-r before:from-pink-500 before:via-red-500 before:to-orange-500"
-              >
-                <h3 className="text-lg font-semibold">{telescope.name}</h3>
-                <p className="text-sm text-gray-300">
-                  <span className="font-medium">{telescope.model}</span> — {telescope.type}
-                </p>
-                <p className="text-sm text-gray-400"><MapPin className='inline-block pr-1' size={20}/> Located at <span className="italic">{telescope.location}</span></p>
-                <p className="text-sm text-gray-400"><Phone className='inline-block pr-1' size={20}/> Contact: <span className="italic">{telescope.contactinfo}</span></p>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-
-      {/* Recommendations */}
-      <div className={cardClass}>
-        <h2 className="text-2xl font-bold mb-4">🌌 Get Telescope Recommendations</h2>
-        <div className="flex flex-col sm:flex-row gap-2 mb-4">
-          <div className="flex-grow">
-            <div className="flex items-center mb-1">
-              <label className="text-sm text-red-500 mr-1">*</label>
-              <label className="text-sm">Object Type</label>
-            </div>
-            <input
-              placeholder="Enter object type (planet, galaxy, nebula...)"
-              value={objectType}
-              onChange={(e) => setObjectType(e.target.value)}
-              className={`${inputClass} w-full`}
-            />
-          </div>
-          <button
-            onClick={fetchRecommendations}
-            className={`${buttonGradient} self-end`}
-          >
-            Recommend
-          </button>
-        </div>
-        {recommendations.length > 0 && (
-          <ul className="space-y-2">
-            {recommendations.map((r, i) => (
-              <li key={i} className="bg-gray-800 p-3 rounded">
-                <strong>{r.type}</strong>: {r.reason}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      <TelescopeIntro />
+      
+      <TelescopeForm 
+        form={form}
+        setForm={setForm}
+        errors={errors}
+        handleRegister={handleRegister}
+        types={types}
+        inputClass={inputClass}
+        buttonGradient={buttonGradient}
+      />
+      
+      <MyTelescopes myTelescopes={myTelescopes} />
+      
+      <AllTelescopes allTelescopes={allTelescopes} />
+      
+      <TelescopeRecommendations
+        objectType={objectType}
+        setObjectType={setObjectType}
+        fetchRecommendations={fetchRecommendations}
+        recommendations={recommendations}
+        inputClass={inputClass}
+        buttonGradient={buttonGradient}
+      />
     </div>
   );
 }
-

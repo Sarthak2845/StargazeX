@@ -28,19 +28,22 @@ export default function Events() {
   };
 
   // Fetch local events based on location
-  const fetchLocalEvents = async () => {
-    if (!location) return;
+const fetchLocalEvents = async () => {
+  try {
+    setLoading(true);
     
-    try {
-      setLoading(true);
-      const res = await axios.get(`http://localhost:3000/api/events/local?location=${encodeURIComponent(location)}`);
-      setEvents(res.data.events || []);
-    } catch (err) {
-      console.error('Failed to fetch local events:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    // Build query string conditionally
+    const query = location ? `?location=${encodeURIComponent(location)}` : '';
+    const res = await axios.get(`http://localhost:3000/api/events/local${query}`);
+    
+    setEvents(res.data.events || []);
+  } catch (err) {
+    console.error('Failed to fetch local events:', err);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   // Fetch events the user has joined
   const fetchJoinedEvents = async () => {

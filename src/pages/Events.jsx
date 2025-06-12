@@ -242,7 +242,7 @@ const fetchLocalEvents = async () => {
         <div className="lg:col-span-1 space-y-6">
           {/* Create Event Form */}
           <motion.div 
-            className="bg-gray-900 p-6 rounded-xl shadow-md"
+            className="border-2 border-blue-600 bg-gray-900 p-6 rounded-xl shadow-md"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -315,7 +315,7 @@ const fetchLocalEvents = async () => {
 
           {/* Joined Events */}
           <motion.div 
-            className="bg-gray-900 p-6 rounded-xl shadow-md"
+            className="border-2 border-blue-600 bg-gray-900 p-6 rounded-xl shadow-md"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
@@ -350,7 +350,7 @@ const fetchLocalEvents = async () => {
 
         {/* Middle Column - Find Local Events */}
         <motion.div 
-          className="lg:col-span-1 bg-gray-900 p-6 rounded-xl shadow-md"
+          className="border-2 border-blue-600 lg:col-span-1 bg-gray-900 p-6 rounded-xl shadow-md"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
@@ -412,7 +412,7 @@ const fetchLocalEvents = async () => {
 
         {/* Right Column - Event Details */}
         <motion.div 
-          className="lg:col-span-1 bg-gray-900 p-6 rounded-xl shadow-md"
+          className="border-2 border-blue-600 lg:col-span-1 bg-gray-900 p-6 rounded-xl shadow-md"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}

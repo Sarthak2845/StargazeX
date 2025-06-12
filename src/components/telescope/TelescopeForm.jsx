@@ -1,9 +1,14 @@
 import React from 'react';
 import { Telescope } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const TelescopeForm = ({ form, setForm, errors, handleRegister, types, inputClass, buttonGradient }) => {
   return (
-    <div className="p-6 rounded-xl shadow-md bg-[#020e1d] border-2 border-blue-600 relative before:absolute before:inset-0 before:-z-10 before:rounded-xl before:bg-gradient-to-r before:from-pink-500 before:via-red-500 before:to-orange-500">
+    <motion.div 
+      className="p-6 rounded-xl shadow-md bg-[#020e1d] border-2 border-blue-600 relative before:absolute before:inset-0 before:-z-10 before:rounded-xl before:bg-gradient-to-r"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.7 }}>
       <h2 className="text-2xl font-bold mb-4"><Telescope className='inline-block' size={30}/> Register Telescope</h2>
       <p className="text-sm text-red-400 mb-4">* Required fields</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -118,7 +123,7 @@ const TelescopeForm = ({ form, setForm, errors, handleRegister, types, inputClas
       >
         Register Telescope
       </button>
-    </div>
+    </motion.div>
   );
 };
 

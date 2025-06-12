@@ -71,7 +71,7 @@ export default function StargazingConditions() {
   return (
     <div className="max-w-6xl mx-auto p-6 pt-24 text-white">
       <motion.h1 
-        className="text-4xl font-bold mb-8 text-center bg-clip-text text-transparent"
+        className="text-4xl font-bold mb-5 p-2 text-center bg-clip-text text-transparent"
         style={{
           background: 'linear-gradient(to right, #40E0D0, #FF8C00, #FF0080)',
           WebkitBackgroundClip: 'text',
@@ -103,7 +103,7 @@ export default function StargazingConditions() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Left Column - Search Form */}
           <motion.div 
-            className="bg-gray-900 p-6 rounded-xl shadow-md"
+            className="border-2 border-blue-600 bg-gray-900 p-6 rounded-xl shadow-md"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -153,7 +153,7 @@ export default function StargazingConditions() {
 
           {/* Right Column - Results */}
           <motion.div 
-            className="bg-gray-900 p-6 rounded-xl shadow-md"
+            className="border-2 border-blue-600 bg-gray-900 p-6 rounded-xl shadow-md"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
@@ -242,7 +242,7 @@ export default function StargazingConditions() {
         </div>
       ) : (
         <motion.div 
-          className="bg-gray-900 p-6 rounded-xl shadow-md"
+          className="border-2 border-blue-600 bg-gray-900 p-6 rounded-xl shadow-md"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}

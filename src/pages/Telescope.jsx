@@ -162,7 +162,7 @@ export default function TelescopeManager() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-white mt-16 font-['poppins']">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-white mt-16">
       <Popup 
         message={popup.message} 
         type={popup.type} 

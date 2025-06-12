@@ -11,6 +11,7 @@ export default function TelescopeManager() {
     location: '',
     type: '',
     model: '',
+    contactinfo:'',
     aperture: '',
     focalLength: ''
   });
@@ -76,6 +77,7 @@ export default function TelescopeManager() {
         location: '',
         type: '',
         model: '',
+          contactinfo:'',
         aperture: '',
         focalLength: ''
       });
@@ -135,6 +137,13 @@ export default function TelescopeManager() {
             onChange={(e) => setForm({ ...form, model: e.target.value })}
             className={inputClass}
           />
+             <input
+            name="contactinfo"
+            placeholder="Contact Info"
+            value={form.contactinfo}
+            onChange={(e) => setForm({ ...form, contactinfo: e.target.value })}
+            className={inputClass}
+          />
           <input
             name="aperture"
             placeholder="Aperture (optional)"
@@ -180,13 +189,21 @@ export default function TelescopeManager() {
         {allTelescopes.length === 0 ? (
           <p className="text-gray-400">No telescopes found in the system.</p>
         ) : (
-          <ul className="list-disc pl-6 space-y-1">
-            {allTelescopes.map(t => (
-              <li key={t.id}>
-                <span className="font-medium">{t.name}</span> — {t.model} ({t.type}) at {t.location}
-              </li>
-            ))}
-          </ul>
+    <ul className="space-y-4">
+  {allTelescopes.map(telescope => (
+    <li
+      key={telescope.id}
+      className="p-4 rounded-xl shadow-md bg-gray-800 text-white hover:bg-gray-700 transition"
+    >
+      <h3 className="text-lg font-semibold">{telescope.name}</h3>
+      <p className="text-sm text-gray-300">
+        <span className="font-medium">{telescope.model}</span> — {telescope.type}
+      </p>
+      <p className="text-sm text-gray-400">📍 Located at <span className="italic">{telescope.location}</span></p>
+      <p className="text-sm text-gray-400">📞 Contact: <span className="italic">{telescope.contactinfo}</span></p>
+    </li>
+  ))}
+</ul>
         )}
       </div>
 

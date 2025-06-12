@@ -21,6 +21,9 @@ export default function Events() {
     visibility: 'public',
     maxAttendees: ''
   });
+  useEffect(()=>{
+fetchLocalEvents();
+  },[]);
 
   const getToken = async () => {
     const user = auth.currentUser;

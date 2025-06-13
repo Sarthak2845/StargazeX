@@ -32,6 +32,9 @@ export default function UserProfile() {
       const from = new URLSearchParams(location.search).get('from');
       if (from) {
         navigate(from);
+      } else {
+        // Redirect to dashboard if not coming from another page
+        navigate('/dashboard');
       }
     } catch (err) {
       console.error('Failed to fetch profile:', err);

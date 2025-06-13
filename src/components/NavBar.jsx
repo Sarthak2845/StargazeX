@@ -21,9 +21,13 @@ const NavBar = () => {
   const navItems = [
     { name: 'Home', link: '/' },
     { name: 'Stargazing', link: '/stargazing' },
+    { name: 'News', link: '/news' }
+  ];
+  
+  const authNavItems = [
     { name: 'Events', link: '/events', requiresAuth: true },
-    { name: 'News', link: '/news' },
-    { name: 'Telescope', link: '/telescope', requiresAuth: true }
+    { name: 'Telescope', link: '/telescope', requiresAuth: true },
+    { name: 'Dashboard', link: '/dashboard', requiresAuth: true }
   ];
 
   const handleNavClick = (item) => {
@@ -70,6 +74,19 @@ const NavBar = () => {
             </li>
           ))}
           
+          {isLoggedIn && authNavItems.map((item) => (
+            <li key={item.name} className="relative cursor-pointer">
+              <button
+                onClick={() => handleNavClick(item)}
+                className="text-white transition-colors duration-300 hover:text-purple-600
+                  after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0
+                  after:bg-purple-600 after:transition-all after:duration-300 hover:after:w-full"
+              >
+                {item.name}
+              </button>
+            </li>
+          ))}
+          
           {/* User Profile Button */}
           <li className="relative cursor-pointer">
             <button
@@ -102,6 +119,17 @@ const NavBar = () => {
           transition={{ duration: 0.3 }}
         >
           {navItems.map((item) => (
+            <li key={item.name} className="py-2 w-full border-b border-gray-700">
+              <button
+                onClick={() => handleNavClick(item)}
+                className="block w-full text-left text-white hover:text-purple-600 transition-colors duration-300"
+              >
+                {item.name}
+              </button>
+            </li>
+          ))}
+          
+          {isLoggedIn && authNavItems.map((item) => (
             <li key={item.name} className="py-2 w-full border-b border-gray-700">
               <button
                 onClick={() => handleNavClick(item)}

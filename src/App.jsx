@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import UserProfile from './components/UserProfile';
 import StarBackground from './components/StarBackground';
 import Preloader from './components/Preloader';
@@ -12,9 +12,21 @@ import Events from './pages/Events';
 import StargazingConditions from './pages/StargazingConditions';
 import AuthRoute from './components/AuthRoute';
 import SolarSystem from './pages/SolarSytem';
+import Dashboard from './pages/Dashboard';
+import { auth } from './components/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsLoggedIn(!!user);
+    });
+    
+    return () => unsubscribe();
+  }, []);
 
   if (loading) {
     return <Preloader onFinish={() => setLoading(false)} />;
@@ -29,33 +41,45 @@ const App = () => {
 
       {/* Foreground content */}
       <div className="relative z-10 flex flex-col min-h-screen text-white">
-        <NavBar />
+        {/* Only show NavBar on non-dashboard routes */}
+        <Routes>
+          <Route path="/dashboard" element={null} />
+          <Route path="*" element={<NavBar />} />
+        </Routes>
         
         <main className="flex-grow font-['Poppins']">
           <Routes>
-            <Route path="/login" element={<UserProfile />} />
-            <Route path="/" element={<Home />} />
-            <Route path="/news" element={<News />} />
-            <Route path="/stargazing" element={<StargazingConditions />} />
-            <Route path="/solarsystem" element={<SolarSystem />} />
+            <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" /> : <UserProfile />} />
+            <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Home />} />
+            <Route path="/news" element={isLoggedIn ? <Navigate to="/dashboard" /> : <News />} />
+            <Route path="/stargazing" element={isLoggedIn ? <Navigate to="/dashboard" /> : <StargazingConditions />} />
+            <Route path="/solarsystem" element={isLoggedIn ? <Navigate to="/dashboard" /> : <SolarSystem />} />
             <Route path="/events" element={
               <AuthRoute>
-                <Events />
+                <Navigate to="/dashboard" />
               </AuthRoute>
             } />
             <Route path="/telescope" element={
               <AuthRoute>
-                <Telescope />
+                <Navigate to="/dashboard" />
+              </AuthRoute>
+            } />
+            <Route path="/dashboard" element={
+              <AuthRoute>
+                <Dashboard />
               </AuthRoute>
             } />
           </Routes>
         </main>
 
-        <Footer />
+        {/* Only show Footer on non-dashboard routes */}
+        <Routes>
+          <Route path="/dashboard" element={null} />
+          <Route path="*" element={<Footer />} />
+        </Routes>
       </div>
     </Router>
   );
 };
 
 export default App;
-

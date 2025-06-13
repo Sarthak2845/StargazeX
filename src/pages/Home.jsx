@@ -79,7 +79,8 @@ const Home = () => {
               { src: "/react-svgrepo-com.svg", alt: "React" },
               { src: "/tailwind-svgrepo-com.svg", alt: "Tailwind" },
               { src: "/motion.png", alt: "Framer Motion" },
-              { src: "/react-router.svg", alt: "React Router" }
+              { src: "/react-router.svg", alt: "React Router" },
+              {src:"/Three.js.svg", alt: "Three.js" },
             ].map((tech, i) => (
               <div key={i} className="w-16 sm:w-20 h-16 sm:h-20 bg-neutral-900 p-2 rounded-xl flex items-center justify-center">
                 <img src={tech.src} alt={tech.alt} className="max-w-full max-h-full object-contain" />

@@ -34,6 +34,7 @@ export default function TelescopeManager() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetchTelescopeTypes();
     fetchMyTelescopes();
     fetchAllTelescopes();

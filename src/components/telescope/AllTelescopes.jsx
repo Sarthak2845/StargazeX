@@ -1,9 +1,14 @@
 import React from 'react';
 import { Earth, MapPin, Phone } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const AllTelescopes = ({ allTelescopes }) => {
   return (
-    <div className="p-6 rounded-xl shadow-md bg-[#020e1d] border-2 border-blue-600 relative before:absolute before:inset-0 before:-z-10 before:rounded-xl before:bg-gradient-to-r before:from-pink-500 before:via-red-500 before:to-orange-500">
+    <motion.div
+    className="p-6 rounded-xl shadow-md bg-[#020e1d] border-2 border-blue-600 relative before:absolute before:inset-0 before:-z-10 before:rounded-xl before:bg-gradient-to-r"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: 0.24 }}>
       <h2 className="text-2xl font-bold mb-4"><Earth className='inline-block' size={30}/> All Telescopes</h2>
       {allTelescopes.length === 0 ? (
         <p className="text-gray-400">No telescopes found in the system.</p>
@@ -24,7 +29,7 @@ const AllTelescopes = ({ allTelescopes }) => {
           ))}
         </ul>
       )}
-    </div>
+    </motion.div>
   );
 };
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 
 export default function StargazingConditions() {
   const [location, setLocation] = useState('');
@@ -9,7 +10,7 @@ export default function StargazingConditions() {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('conditions');
-
+  const loc = useLocation();
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -19,10 +20,14 @@ export default function StargazingConditions() {
   };
 
   useEffect(() => {
+    if(loc.state?.triggeredBy === 'card'){
+      setActiveTab('upcoming');
+    }
+    window.scrollTo(0, 0);
     const today = new Date();
     setDate(today.toISOString().split('T')[0]);
     fetchUpcomingEvents();
-  }, []);
+  }, [loc.state]);
 
   const fetchUpcomingEvents = async () => {
     try {

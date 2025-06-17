@@ -45,6 +45,7 @@ export default function UserProfile() {
   };
 
   useEffect(() => {
+    window.scrollTo(0,0);
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         const token = await user.getIdToken();

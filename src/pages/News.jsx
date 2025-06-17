@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import LoadingCard from '../components/LoadingCard';
 import PictureOfDay from '../components/PictureOfDay';
+import { motion } from 'framer-motion';
 const NewsPage = () => {
   const [news, setNews] = useState([]);
 const [loading, setLoading] = useState(true);
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchNews = async () => {
       try {
         const res = await axios.get('http://localhost:3000/api/news');
@@ -32,22 +34,28 @@ const [loading, setLoading] = useState(true);
       >
         <div className="absolute inset-0  bg-opacity-60 z-0"></div>
         <div className="relative z-10 max-w-5xl mx-auto text-center mb-12">
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl  bg-clip-text text-transparent animate-text font-extrabold font-['Orbitron'] text-center"
+              <motion.h1 className="text-5xl sm:text-6xl lg:text-7xl  bg-clip-text text-transparent animate-text font-extrabold font-['Orbitron'] text-center"
                         style={{
             background: 'linear-gradient(to right, #40E0D0, #FF8C00, #FF0080)',
             WebkitBackgroundClip: 'text',
             color: 'transparent',
           }}
-              >
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}>
         StarGazeX Newsroom
-      </h1>
-          <p className="mt-4 text-lg sm:text-xl text-gray-300 font-['Poppins']">
+      </motion.h1>
+          <motion.p 
+          className="mt-4 text-lg sm:text-xl text-gray-300 font-['Poppins']"
+          initial={{ opacity: 0, x: -40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}>
             Stay updated with the latest in space exploration, satellite tech, interstellar breakthroughs, and cosmic news from trusted sources around the world.
-          </p>
+          </motion.p>
         </div>
       </div>
     <div className='flex justify-center items-center m-8 flex-col'>
-<h2
+<motion.h2
   className="relative text-5xl sm:text-6xl lg:text-7xl font-extrabold font-['Orbitron'] text-center mb-8
              bg-clip-text text-transparent transition-colors duration-300
              after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0
@@ -57,9 +65,11 @@ const [loading, setLoading] = useState(true);
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
   }}
->
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5, delay: 0.3 }}>
   Picture Of Day
-</h2>
+</motion.h2>
 <PictureOfDay />
     </div>
       {/* News Cards Section */}

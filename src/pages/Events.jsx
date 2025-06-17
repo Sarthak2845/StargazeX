@@ -24,6 +24,7 @@ export default function Events() {
     maxAttendees: ''
   });
   useEffect(()=>{
+    window.scrollTo(0, 0);
 fetchLocalEvents();
   },[]);
 

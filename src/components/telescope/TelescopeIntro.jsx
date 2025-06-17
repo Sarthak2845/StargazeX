@@ -8,7 +8,7 @@ const TelescopeIntro = () => {
       className="bg-none pb-6 rounded-xl shadow-md relative"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.2 }}>
+      transition={{ duration: 0.5, delay: 0.1 }}>
       <motion.h1 
         className="text-4xl font-bold mb-5 p-2 text-center bg-clip-text text-transparent font-['Orbitron']"
         style={{
@@ -43,7 +43,7 @@ const TelescopeIntro = () => {
           className="bg-[#041b11] p-4 rounded-lg border-2 border-green-500"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}>
+          transition={{ duration: 0.5, delay: 0.4 }}>
           <h3 className="text-xl font-semibold mb-2">
             <MoonStar className='inline-block' size={30}/> For Stargazers
           </h3>

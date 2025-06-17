@@ -10,7 +10,7 @@ import News from './pages/News';
 import Telescope from './pages/Telescope';
 import Events from './pages/Events';
 import StargazingConditions from './pages/StargazingConditions';
-import AuthRoute from './components/AuthRoute';
+import ConditionalRoute from './components/ConditionalRoute';
 import SolarSystem from './pages/SolarSytem';
 
 const App = () => {
@@ -39,14 +39,14 @@ const App = () => {
             <Route path="/stargazing" element={<StargazingConditions />} />
             <Route path="/solarsystem" element={<SolarSystem />} />
             <Route path="/events" element={
-              <AuthRoute>
+              <ConditionalRoute requiresAuth={true}>
                 <Events />
-              </AuthRoute>
+              </ConditionalRoute>
             } />
             <Route path="/telescope" element={
-              <AuthRoute>
+              <ConditionalRoute requiresAuth={true}>
                 <Telescope />
-              </AuthRoute>
+              </ConditionalRoute>
             } />
           </Routes>
         </main>

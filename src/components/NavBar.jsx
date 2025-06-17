@@ -26,6 +26,9 @@ const NavBar = () => {
     { name: 'Telescope', link: '/telescope', requiresAuth: true }
   ];
 
+  // Filter nav items based on authentication status
+  const visibleNavItems = navItems.filter(item => !item.requiresAuth || isLoggedIn);
+
   const handleNavClick = (item) => {
     if (item.requiresAuth && !isLoggedIn) {
       navigate(`/login?from=${item.link}`);
@@ -57,7 +60,7 @@ const NavBar = () => {
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6 text-white">
-          {navItems.map((item) => (
+          {visibleNavItems.map((item) => (
             <li key={item.name} className="relative cursor-pointer">
               <button
                 onClick={() => handleNavClick(item)}
@@ -101,7 +104,7 @@ const NavBar = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          {navItems.map((item) => (
+          {visibleNavItems.map((item) => (
             <li key={item.name} className="py-2 w-full border-b border-gray-700">
               <button
                 onClick={() => handleNavClick(item)}
@@ -119,7 +122,7 @@ const NavBar = () => {
                 navigate('/login');
                 setIsOpen(false);
               }}
-              className="block w-full text-left text-white hover:text-purple-600 transition-colors duration-300 flex items-center gap-2"
+              className=" w-full text-left text-white hover:text-purple-600 transition-colors duration-300 flex items-center gap-2"
             >
               <User size={18} />
               {isLoggedIn ? 'Profile' : 'Login'}

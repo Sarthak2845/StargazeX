@@ -10,23 +10,20 @@ export default function StargazingConditions() {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('conditions');
 
-  // Format date for display
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     });
   };
 
-  // Set default date to today
   useEffect(() => {
     const today = new Date();
     setDate(today.toISOString().split('T')[0]);
     fetchUpcomingEvents();
   }, []);
 
-  // Fetch upcoming astronomical events
   const fetchUpcomingEvents = async () => {
     try {
       setLoading(true);
@@ -39,10 +36,8 @@ export default function StargazingConditions() {
     }
   };
 
-  // Fetch stargazing conditions
   const fetchStargazingConditions = async () => {
     if (!location || !date) return;
-    
     try {
       setLoading(true);
       const res = await axios.get(
@@ -56,21 +51,20 @@ export default function StargazingConditions() {
     }
   };
 
-  // Get quality color based on stargazing quality
   const getQualityColor = (quality) => {
     switch (quality) {
       case 'Excellent': return 'text-green-400';
       case 'Good': return 'text-yellow-400';
+      case 'Fair': return 'text-orange-400';
       default: return 'text-red-400';
     }
   };
 
-  // Input field styling
   const inputClass = "w-full p-2 rounded bg-gray-800 text-white border border-gray-600 placeholder-gray-400";
 
   return (
     <div className="max-w-6xl mx-auto p-6 pt-24 text-white">
-      <motion.h1 
+      <motion.h1
         className="text-4xl font-bold mb-5 p-2 text-center bg-clip-text text-transparent font-['Orbitron']"
         style={{
           background: 'linear-gradient(to right, #39FF14, #0FE9D8, #00D7FF)',
@@ -85,13 +79,13 @@ export default function StargazingConditions() {
 
       {/* Tab Navigation */}
       <div className="flex mb-6 border-b border-gray-700">
-        <button 
+        <button
           className={`px-4 py-2 ${activeTab === 'conditions' ? 'border-b-2 border-purple-500 text-purple-400' : 'text-gray-400'}`}
           onClick={() => setActiveTab('conditions')}
         >
           Check Conditions
         </button>
-        <button 
+        <button
           className={`px-4 py-2 ${activeTab === 'upcoming' ? 'border-b-2 border-purple-500 text-purple-400' : 'text-gray-400'}`}
           onClick={() => setActiveTab('upcoming')}
         >
@@ -102,7 +96,7 @@ export default function StargazingConditions() {
       {activeTab === 'conditions' ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Left Column - Search Form */}
-          <motion.div 
+          <motion.div
             className="border-2 border-blue-600 bg-gray-900 p-6 rounded-xl shadow-md"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -138,7 +132,6 @@ export default function StargazingConditions() {
               </button>
             </div>
 
-            {/* Tips for stargazing */}
             <div className="mt-6 bg-gray-800 p-4 rounded">
               <h3 className="font-semibold mb-2">Stargazing Tips</h3>
               <ul className="list-disc pl-5 space-y-1 text-sm">
@@ -152,14 +145,14 @@ export default function StargazingConditions() {
           </motion.div>
 
           {/* Right Column - Results */}
-          <motion.div 
+          <motion.div
             className="border-2 border-blue-600 bg-gray-900 p-6 rounded-xl shadow-md"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <h2 className="text-2xl font-bold mb-4">✨ Stargazing Results</h2>
-            
+
             {conditions ? (
               <div className="space-y-4">
                 <div className="bg-gray-800 p-4 rounded">
@@ -174,30 +167,26 @@ export default function StargazingConditions() {
                   </p>
                 </div>
 
-                {/* Weather Information */}
-                {conditions.weather && (
+                {conditions.weather?.forecast && (
                   <div className="bg-gray-800 p-4 rounded">
                     <h3 className="font-semibold mb-2">Weather Conditions</h3>
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       <div>
-                        <p><span className="text-gray-400">Temperature:</span> {conditions.weather.temperature}</p>
-                        <p><span className="text-gray-400">Cloud Cover:</span> {conditions.weather.cloudCover}</p>
+                        <p><span className="text-gray-400">Temperature:</span> {conditions.weather.forecast.temperature}</p>
+                        <p><span className="text-gray-400">Cloud Cover:</span> {conditions.weather.forecast.cloudCover}</p>
                       </div>
                       <div>
-                        <p><span className="text-gray-400">Humidity:</span> {conditions.weather.humidity}</p>
-                        <p><span className="text-gray-400">Wind:</span> {conditions.weather.windSpeed}</p>
-          
+                        <p><span className="text-gray-400">Humidity:</span> {conditions.weather.forecast.humidity}</p>
+                        <p><span className="text-gray-400">Wind:</span> {conditions.weather.forecast.windSpeed}</p>
                       </div>
-                      <div>
-                        <p className='text-gray-400'>Moon Phase: <span className='text-white'>{conditions.weather.moonPhase}</span></p>
+                      <div className="col-span-2">
+                        <p className='text-gray-400'>Moon Phase: <span className='text-white'>{conditions.weather.forecast.moonPhase}</span></p>
                       </div>
-      
                     </div>
                   </div>
                 )}
 
-                {/* Celestial Objects */}
-                {conditions.celestialObjects && conditions.celestialObjects.length > 0 && (
+                {conditions.celestialObjects?.length > 0 && (
                   <div className="bg-gray-800 p-4 rounded">
                     <h3 className="font-semibold mb-2">Visible Celestial Objects</h3>
                     <div className="max-h-[200px] overflow-y-auto">
@@ -211,20 +200,19 @@ export default function StargazingConditions() {
                           </tr>
                         </thead>
                         <tbody>
-  {conditions.celestialObjects.map((obj, i) => (
-    <tr key={i} className="border-t border-gray-700">
-      <td className="py-2">{obj.name}</td>
-      <td className="py-2 capitalize">{obj.type}</td>
-      <td className="py-2">
-        <span className={getQualityColor(obj.visibility)}>
-          {obj.visibility}
-        </span>
-      </td>
-      <td className="py-2">{obj.direction}</td> {/* ✅ Direction column */}
-    </tr>
-  ))}
-</tbody>
-
+                          {conditions.celestialObjects.map((obj, i) => (
+                            <tr key={i} className="border-t border-gray-700">
+                              <td className="py-2">{obj.name}</td>
+                              <td className="py-2 capitalize">{obj.type}</td>
+                              <td className="py-2">
+                                <span className={getQualityColor(obj.visibility)}>
+                                  {obj.visibility}
+                                </span>
+                              </td>
+                              <td className="py-2">{obj.direction}</td>
+                            </tr>
+                          ))}
+                        </tbody>
                       </table>
                     </div>
                   </div>
@@ -232,8 +220,8 @@ export default function StargazingConditions() {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center h-64 text-gray-400">
-                <svg className="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                <svg className="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
                 <p>Enter a location and date to check stargazing conditions</p>
               </div>
@@ -241,14 +229,14 @@ export default function StargazingConditions() {
           </motion.div>
         </div>
       ) : (
-        <motion.div 
+        <motion.div
           className="border-2 border-blue-600 bg-gray-900 p-6 rounded-xl shadow-md"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-2xl font-bold mb-4">🌠 Upcoming Astronomical Events</h2>
-          
+
           {loading ? (
             <div className="flex justify-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
@@ -256,7 +244,7 @@ export default function StargazingConditions() {
           ) : upcomingEvents.length > 0 ? (
             <div className="space-y-4">
               {upcomingEvents.map((event, index) => (
-                <motion.div 
+                <motion.div
                   key={index}
                   className="bg-gray-800 p-4 rounded"
                   initial={{ opacity: 0, y: 10 }}

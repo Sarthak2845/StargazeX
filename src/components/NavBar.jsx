@@ -23,7 +23,8 @@ const NavBar = () => {
     { name: 'Stargazing', link: '/stargazing' },
     { name: 'Events', link: '/events', requiresAuth: true },
     { name: 'News', link: '/news' },
-    { name: 'Telescope', link: '/telescope', requiresAuth: true }
+    { name: 'Telescope', link: '/telescope', requiresAuth: true },
+    { name: 'Solar Flare', link: '/solarflare' }
   ];
 
   // Filter nav items based on authentication status

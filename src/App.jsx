@@ -12,6 +12,7 @@ import Events from './pages/Events';
 import StargazingConditions from './pages/StargazingConditions';
 import ConditionalRoute from './components/ConditionalRoute';
 import SolarSystem from './pages/SolarSytem';
+import SolarFlare from './pages/SolarFlare';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -38,6 +39,7 @@ const App = () => {
             <Route path="/news" element={<News />} />
             <Route path="/stargazing" element={<StargazingConditions />} />
             <Route path="/solarsystem" element={<SolarSystem />} />
+            <Route path="/solarflare" element={<SolarFlare />} />
             <Route path="/events" element={
               <ConditionalRoute requiresAuth={true}>
                 <Events />

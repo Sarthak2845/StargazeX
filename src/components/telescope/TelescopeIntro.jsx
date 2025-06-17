@@ -10,9 +10,9 @@ const TelescopeIntro = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}>
       <motion.h1 
-        className="text-4xl font-bold mb-5 p-2 text-center bg-clip-text text-transparent"
+        className="text-4xl font-bold mb-5 p-2 text-center bg-clip-text text-transparent font-['Orbitron']"
         style={{
-        background: 'linear-gradient(to right, #40E0D0, #FF8C00, #FF0080)',
+        background: 'linear-gradient(to right, #39FF14, #0FE9D8, #00D7FF)',
         WebkitBackgroundClip: 'text',
         }}
         initial={{ opacity: 0, y: -20 }}

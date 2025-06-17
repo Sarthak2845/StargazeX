@@ -3,6 +3,7 @@ import axios from 'axios';
 import { auth } from '../components/firebase';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import Popup from '../components/Popup';
 
 export default function Events() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ export default function Events() {
   const [loading, setLoading] = useState(true);
   const [location, setLocation] = useState('');
   const [comment, setComment] = useState('');
+  const [popup, setPopup] = useState({ message: '', type: 'error', isVisible: false });
   const [eventForm, setEventForm] = useState({
     title: '',
     date: '',
@@ -39,9 +41,17 @@ const fetchLocalEvents = async () => {
     const query = location ? `?location=${encodeURIComponent(location)}` : '';
     const res = await axios.get(`http://localhost:3000/api/events/local${query}`);
     
-    setEvents(res.data.events || []);
+    // Filter out past events, only show upcoming events
+    const now = new Date();
+    const upcomingEvents = (res.data.events || []).filter(event => {
+      const eventDate = new Date(event.date);
+      return eventDate >= now;
+    });
+    
+    setEvents(upcomingEvents);
   } catch (err) {
     console.error('Failed to fetch local events:', err);
+    setPopup({ message: 'Failed to fetch events. Please try again.', type: 'error', isVisible: true });
   } finally {
     setLoading(false);
   }
@@ -57,9 +67,18 @@ const fetchLocalEvents = async () => {
       const res = await axios.get('http://localhost:3000/api/events/joined', {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setJoinedEvents(res.data || []);
+      
+      // Filter out past events, only show upcoming events
+      const now = new Date();
+      const upcomingJoinedEvents = (res.data || []).filter(event => {
+        const eventDate = new Date(event.date);
+        return eventDate >= now;
+      });
+      
+      setJoinedEvents(upcomingJoinedEvents);
     } catch (err) {
       console.error('Failed to fetch joined events:', err);
+      setPopup({ message: 'Failed to fetch your events. Please try again.', type: 'error', isVisible: true });
     }
   };
 
@@ -70,6 +89,7 @@ const fetchLocalEvents = async () => {
       setSelectedEvent(res.data);
     } catch (err) {
       console.error('Failed to fetch event details:', err);
+      setPopup({ message: 'Failed to load event details. Please try again.', type: 'error', isVisible: true });
     }
   };
 
@@ -100,18 +120,29 @@ const fetchLocalEvents = async () => {
         maxAttendees: ''
       });
       
+      setPopup({ message: 'Event created successfully!', type: 'success', isVisible: true });
       fetchJoinedEvents();
       if (location === eventForm.location) {
         fetchLocalEvents();
       }
     } catch (err) {
       console.error('Failed to create event:', err);
+      setPopup({ message: 'Failed to create event. Please try again.', type: 'error', isVisible: true });
     }
   };
 
   // Join an event
   const joinEvent = async (eventId) => {
     try {
+      // Check if event is full before attempting to join
+      const eventToJoin = events.find(e => e.id === eventId) || 
+                         (selectedEvent && selectedEvent.id === eventId ? selectedEvent : null);
+      
+      if (eventToJoin && eventToJoin.maxAttendees && eventToJoin.attendeeCount >= eventToJoin.maxAttendees) {
+        setPopup({ message: 'This event is full. No more registrations are allowed.', type: 'error', isVisible: true });
+        return;
+      }
+      
       const token = await getToken();
       if (!token) {
         navigate('/login');
@@ -124,12 +155,19 @@ const fetchLocalEvents = async () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
+      setPopup({ message: 'Successfully joined the event!', type: 'success', isVisible: true });
       fetchJoinedEvents();
       if (selectedEvent && selectedEvent.id === eventId) {
         fetchEventDetails(eventId);
       }
     } catch (err) {
       console.error('Failed to join event:', err);
+      // Check if error is due to event being full
+      if (err.response && err.response.status === 400 && err.response.data.message?.includes('full')) {
+        setPopup({ message: 'This event is full. No more registrations are allowed.', type: 'error', isVisible: true });
+      } else {
+        setPopup({ message: 'Failed to join event. Please try again.', type: 'error', isVisible: true });
+      }
     }
   };
 
@@ -145,12 +183,14 @@ const fetchLocalEvents = async () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
+      setPopup({ message: 'You have left the event', type: 'success', isVisible: true });
       fetchJoinedEvents();
       if (selectedEvent && selectedEvent.id === eventId) {
         fetchEventDetails(eventId);
       }
     } catch (err) {
       console.error('Failed to leave event:', err);
+      setPopup({ message: 'Failed to leave event. Please try again.', type: 'error', isVisible: true });
     }
   };
 
@@ -165,16 +205,21 @@ const fetchLocalEvents = async () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
+      setPopup({ message: 'Event has been cancelled', type: 'success', isVisible: true });
       fetchJoinedEvents();
       setSelectedEvent(null);
     } catch (err) {
       console.error('Failed to cancel event:', err);
+      setPopup({ message: 'Failed to cancel event. Please try again.', type: 'error', isVisible: true });
     }
   };
 
   // Add a comment to an event
   const addComment = async (eventId) => {
-    if (!comment.trim()) return;
+    if (!comment.trim()) {
+      setPopup({ message: 'Comment cannot be empty', type: 'error', isVisible: true });
+      return;
+    }
     
     try {
       const token = await getToken();
@@ -193,6 +238,7 @@ const fetchLocalEvents = async () => {
       fetchEventDetails(eventId);
     } catch (err) {
       console.error('Failed to add comment:', err);
+      setPopup({ message: 'Failed to add comment. Please try again.', type: 'error', isVisible: true });
     }
   };
 
@@ -224,17 +270,23 @@ const fetchLocalEvents = async () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6 pt-24 text-white">
+      <Popup 
+        message={popup.message}
+        type={popup.type}
+        isVisible={popup.isVisible}
+        onClose={() => setPopup({ ...popup, isVisible: false })}
+      />
       <motion.h1 
-        className="text-4xl font-bold mb-8 text-center bg-clip-text text-transparent"
+        className="text-4xl font-bold mb-8 text-center bg-clip-text text-transparent font-['Orbitron']"
         style={{
-          background: 'linear-gradient(to right, #40E0D0, #FF8C00, #FF0080)',
+          background: 'linear-gradient(to right, #39FF14, #0FE9D8, #00D7FF)',
           WebkitBackgroundClip: 'text',
         }}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        Celestial Events
+        Local Celestial Events
       </motion.h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -320,9 +372,9 @@ const fetchLocalEvents = async () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <h2 className="text-2xl font-bold mb-4">🔭 My Events</h2>
+            <h2 className="text-2xl font-bold mb-4">🔭 My Upcoming Events</h2>
             {joinedEvents.length === 0 ? (
-              <p className="text-gray-400">You haven't joined any events yet.</p>
+              <p className="text-gray-400">You haven't joined any upcoming events.</p>
             ) : (
               <ul className="space-y-2">
                 {joinedEvents.map(event => (
@@ -355,7 +407,7 @@ const fetchLocalEvents = async () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <h2 className="text-2xl font-bold mb-4">🌍 Find Local Events</h2>
+          <h2 className="text-2xl font-bold mb-4">🌍 Find Upcoming Events</h2>
           <div className="flex gap-2 mb-4">
             <input
               type="text"
@@ -374,7 +426,7 @@ const fetchLocalEvents = async () => {
 
           {loading ? (
             <div className="flex justify-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-t-2 b   border-purple-500"></div>
             </div>
           ) : events.length > 0 ? (
             <ul className="space-y-2 max-h-[500px] overflow-y-auto">
@@ -389,22 +441,31 @@ const fetchLocalEvents = async () => {
                   <div className="flex justify-between items-center mt-2">
                     <span className="text-xs bg-gray-700 px-2 py-1 rounded">
                       {event.attendeeCount} {event.attendeeCount === 1 ? 'attendee' : 'attendees'}
+                      {event.maxAttendees && (
+                        <span> / {event.maxAttendees} max</span>
+                      )}
                     </span>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        joinEvent(event.id);
-                      }}
-                      className="bg-blue-600 hover:bg-blue-700 text-xs px-2 py-1 rounded"
-                    >
-                      Join
-                    </button>
+                    {event.maxAttendees && event.attendeeCount >= event.maxAttendees ? (
+                      <span className="bg-red-600 text-xs px-2 py-1 rounded">
+                        Full
+                      </span>
+                    ) : (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          joinEvent(event.id);
+                        }}
+                        className="bg-blue-600 hover:bg-blue-700 text-xs px-2 py-1 rounded"
+                      >
+                        Join
+                      </button>
+                    )}
                   </div>
                 </li>
               ))}
             </ul>
           ) : location ? (
-            <p className="text-gray-400">No events found in this location.</p>
+            <p className="text-gray-400">No upcoming events found in this location.</p>
           ) : (
             <p className="text-gray-400">Enter a location to find events.</p>
           )}
@@ -432,7 +493,12 @@ const fetchLocalEvents = async () => {
                 )}
                 <p><strong>Visibility:</strong> {selectedEvent.visibility}</p>
                 {selectedEvent.maxAttendees && (
-                  <p><strong>Max Attendees:</strong> {selectedEvent.maxAttendees}</p>
+                  <div className="flex items-center mt-1">
+                    <p><strong>Capacity:</strong> {selectedEvent.attendees?.length || 0} / {selectedEvent.maxAttendees}</p>
+                    {selectedEvent.attendees && selectedEvent.attendees.length >= selectedEvent.maxAttendees && (
+                      <span className="ml-2 bg-red-600 text-white text-xs px-2 py-1 rounded">Full</span>
+                    )}
+                  </div>
                 )}
               </div>
               
@@ -521,6 +587,11 @@ const fetchLocalEvents = async () => {
                   >
                     Leave Event
                   </button>
+                ) : selectedEvent.maxAttendees && selectedEvent.attendees && 
+                   selectedEvent.attendees.length >= selectedEvent.maxAttendees ? (
+                  <div className="bg-gray-600 px-4 py-2 rounded text-white flex-1 text-center">
+                    Event Full
+                  </div>
                 ) : (
                   <button
                     onClick={() => joinEvent(selectedEvent.id)}

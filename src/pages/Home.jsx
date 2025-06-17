@@ -1,6 +1,5 @@
 import React from 'react';
-import GradientText from '../components/GradientText';
-import { CalendarDays, Rocket, Telescope, Newspaper, Brush, Cog } from 'lucide-react';
+import { CalendarDays, Rocket, Telescope, Newspaper, Brush, Cog, MapPin, Camera, BookOpen, Cloud } from 'lucide-react';
 import SpotlightCard from '../components/SpotlightCard';
 import { Link } from 'react-router';
 const Home = () => {
@@ -8,7 +7,7 @@ const Home = () => {
     <div className="flex flex-col items-center justify-center px-4 sm:px-6 md:px-12 lg:px-20 py-10 pt-24 max-w-screen-xl mx-auto">
 
       {/* Hero Title */}
-      <h1 className="text-5xl sm:text-6xl lg:text-7xl bg-gradient-to-r from-[#40E0D0] via-[#FF8C00] to-[#FF0080] bg-clip-text text-transparent animate-text font-extrabold font-['Orbitron'] text-center">
+      <h1 className="text-5xl sm:text-6xl lg:text-7xl bg-gradient-to-l from-[#FF00FF] via-[#FF8000] to-[#FF0080] bg-clip-text text-transparent  font-extrabold font-['Orbitron'] text-center">
         StarGazeX
       </h1>
 
@@ -39,7 +38,9 @@ const Home = () => {
         {/* Card 1 */}
         <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%]" spotlightColor="rgba(255, 1, 132, 0.3)">
           <CalendarDays className="inline m-3" size={60} />
-          <h2 className="text-xl sm:text-2xl font-bold font-['Orbitron'] mb-4">Real-Time Space Tracking</h2>
+          <h2 className="text-xl sm:text-2xl font-bold font-['Orbitron'] mb-4 bg-linear-to-r from-pink-500 via-red-500 to-orange-500 bg-clip-text text-transparent">
+            Real-Time Space Tracking
+          </h2>
           <p className="text-sm sm:text-lg font-['Poppins']">
             Stay updated on meteor showers, eclipses, ISS passes, and more — tailored to your location.
           </p>
@@ -47,8 +48,10 @@ const Home = () => {
 
         {/* Card 2 */}
         <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%]" spotlightColor="rgba(0, 255, 243, 0.3)">
-          <Telescope className="inline m-3" size={60} />
-          <h2 className="text-xl sm:text-2xl font-bold font-['Orbitron'] mb-4">Local Stargazing Events</h2>
+          <MapPin className="inline m-3" size={60} />
+          <h2 className="text-xl sm:text-2xl font-bold font-['Orbitron'] mb-4 bg-linear-to-r from-pink-500 via-red-500 to-orange-500 bg-clip-text text-transparent">
+            Local Stargazing Events
+          </h2>
           <p className="text-sm sm:text-lg font-['Poppins']">
             Find and host stargazing meetups near you. Share the sky with your community.
           </p>
@@ -57,9 +60,33 @@ const Home = () => {
         {/* Card 3 */}
         <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%]" spotlightColor="rgba(73, 0, 255, 0.3)">
           <Newspaper className="inline m-3" size={60} />
-          <h2 className="text-xl sm:text-2xl font-bold font-['Orbitron'] mb-4">Space News Feed</h2>
+          <h2 className="text-xl sm:text-2xl font-bold font-['Orbitron'] mb-4 bg-linear-to-r from-pink-500 via-red-500 to-orange-500 bg-clip-text text-transparent">
+            Space News Feed
+          </h2>
           <p className="text-sm sm:text-lg font-['Poppins']">
             Never miss a discovery. Get daily updates from trusted space sources.
+          </p>
+        </SpotlightCard>
+        
+        {/* Card 4 - Telescope Sharing Network */}
+        <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%]" spotlightColor="rgba(255, 140, 0, 0.3)">
+          <Telescope className="inline m-3" size={60} />
+          <h2 className="text-xl sm:text-2xl font-bold font-['Orbitron'] mb-4 bg-gradient-to-r bg-linear-to-r from-pink-500 via-red-500 to-orange-500 bg-clip-text text-transparent">
+            Telescope Sharing Network
+          </h2>
+          <p className="text-sm sm:text-lg font-['Poppins']">
+            Connect with fellow astronomers to share equipment and viewing opportunities in your area.
+          </p>
+        </SpotlightCard>
+                
+        {/* Card 5 - Weather Forecasts */}
+        <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%]" spotlightColor="rgba(50, 205, 50, 0.3)">
+          <Cloud className="inline m-3" size={60} />
+          <h2 className="text-xl sm:text-2xl font-bold font-['Orbitron'] mb-4 bg-gradient-to-r bg-linear-to-r from-pink-500 via-red-500 to-orange-500 bg-clip-text text-transparent">
+            Stargazing Weather
+          </h2>
+          <p className="text-sm sm:text-lg font-['Poppins']">
+            Get specialized astronomy weather forecasts with visibility conditions for optimal viewing.
           </p>
         </SpotlightCard>
       </div>
@@ -73,7 +100,9 @@ const Home = () => {
         {/* Frontend */}
         <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%] flex flex-col items-center justify-center" spotlightColor="rgba(197, 196, 196, 0.3)">
           <Brush className="inline m-3" size={60} />
-          <h2 className="text-xl sm:text-2xl font-bold font-['Orbitron'] mb-4 text-center">FrontEnd</h2>
+          <h2 className="text-xl sm:text-2xl font-bold font-['Orbitron'] mb-4 text-center bg-linear-to-r from-pink-500 via-red-500 to-orange-500 bg-clip-text text-transparent">
+            FrontEnd
+          </h2>
           <div className="flex flex-wrap gap-3 justify-center">
             {[
               { src: "/react-svgrepo-com.svg", alt: "React" },
@@ -91,7 +120,9 @@ const Home = () => {
         {/* Backend */}
         <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%] flex flex-col items-center justify-center" spotlightColor="rgba(197, 196, 196, 0.3)">
           <Cog className="inline m-3" size={60} />
-          <h2 className="text-xl sm:text-2xl font-bold font-['Orbitron'] mb-4 text-center">BackEnd</h2>
+          <h2 className="text-xl sm:text-2xl font-bold font-['Orbitron'] mb-4 text-center bg-linear-to-r from-pink-500 via-red-500 to-orange-500 bg-clip-text text-transparent">
+            BackEnd
+          </h2>
           <div className="flex flex-wrap gap-3 justify-center">
             {[
               { src: "/node-js-svgrepo-com.svg", alt: "Node.js" },

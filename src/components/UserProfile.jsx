@@ -20,12 +20,15 @@ export default function UserProfile() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
+  const [error, setError] = useState(null);
 
   const fetchProfile = async (token) => {
     try {
+      console.log('Fetching profile with token:', token);
       const res = await axios.get('https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/user/profile', {
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log('Profile data received:', res.data);
       setProfile(res.data);
 
       // If user was redirected to login, send them back to the original page
@@ -35,6 +38,7 @@ export default function UserProfile() {
       }
     } catch (err) {
       console.error('Failed to fetch profile:', err);
+      setError('Failed to fetch profile. Please try again.');
       if (err.response?.status === 401) {
         console.warn('Token expired, signing out.');
         await signOut(auth);
@@ -47,10 +51,19 @@ export default function UserProfile() {
   useEffect(() => {
     window.scrollTo(0,0);
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      console.log('Auth state changed:', user ? 'logged in' : 'logged out');
       if (user) {
-        const token = await user.getIdToken();
-        sessionStorage.setItem('token', token);
-        await fetchProfile(token);
+        try {
+          const token = await user.getIdToken();
+          console.log('Token obtained:', token ? 'yes' : 'no');
+          sessionStorage.setItem('token', token);
+          await fetchProfile(token);
+        } catch (err) {
+          console.error('Error getting token:', err);
+          setError('Authentication error. Please try again.');
+        }
+      } else {
+        setProfile(null);
       }
       setAuthChecked(true);
     });
@@ -61,11 +74,16 @@ export default function UserProfile() {
   const handleLogin = async () => {
     try {
       setLoading(true);
+      setError(null);
+      console.log('Starting login process');
       const result = await signInWithPopup(auth, provider);
+      console.log('Login successful, user:', result.user.email);
       const user = result.user;
       const token = await user.getIdToken();
+      console.log('Token obtained after login:', token ? 'yes' : 'no');
       sessionStorage.setItem('token', token);
 
+      console.log('Registering user with backend');
       await axios.post(
         'https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/user/register',
         { name: user.displayName },
@@ -75,15 +93,22 @@ export default function UserProfile() {
       await fetchProfile(token);
     } catch (err) {
       console.error('Login failed:', err);
+      setError('Login failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   const handleLogout = async () => {
-    await signOut(auth);
-    sessionStorage.removeItem('token');
-    setProfile(null);
+    try {
+      await signOut(auth);
+      sessionStorage.removeItem('token');
+      setProfile(null);
+      console.log('User logged out successfully');
+    } catch (err) {
+      console.error('Logout error:', err);
+      setError('Logout failed. Please try again.');
+    }
   };
 
   return (
@@ -100,6 +125,12 @@ export default function UserProfile() {
       >
         {profile ? 'Your Cosmic Profile' : 'Join the StarGazeX Community'}
       </motion.h1>
+
+      {error && (
+        <div className="bg-red-900/50 border border-red-500 text-red-200 p-3 rounded mb-4">
+          {error}
+        </div>
+      )}
 
       {!profile ? (
         <motion.div
@@ -154,99 +185,91 @@ export default function UserProfile() {
           )}
         </motion.div>
       ) : (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="relative p-[2px] rounded-xl overflow-hidden"
-    >
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,_hsl(283,99.2%,53.5%),_hsl(311,75.1%,51.2%),_hsl(330,85.1%,60.6%),_hsl(353,94.8%,69.8%),_hsl(17.6,100%,68.6%))] animate-text" />
-
-      <div className="relative bg-[#0d0c0d] p-6 rounded-xl text-left w-full h-full z-10">
-        <div className="flex items-center mb-6">
-          {auth.currentUser?.photoURL ? (
-            <img
-              src={auth.currentUser.photoURL}
-              alt="Profile"
-              className="w-16 h-16 rounded-full border-2 border-cyan-600"
-            />
-          ) : (
-            <div className="w-16 h-16 rounded-full bg-purple-900 flex items-center justify-center text-2xl font-bold text-white">
-              {profile.name?.charAt(0).toUpperCase() || 'U'}
-            </div>
-          )}
-          <div className="ml-4">
-            <h2 className="text-xl font-semibold text-pink-500">
-              {profile.name}
-            </h2>
-            <p className="text-sm text-fuchsia-500">
-              {auth.currentUser?.email}
-            </p>
-          </div>
-        </div>
-
-        <div className="space-y-3 mb-6">
-          <button
-            onClick={() => navigate('/events')}
-            className="w-full bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-lg transition-colors flex justify-between items-center"
-          >
-            <span className="flex items-center">
-              <Calendar size={18} className="mr-2" />
-              Events
-            </span>
-            <ChevronRight size={18} />
-          </button>
-          <button
-            onClick={() => navigate('/news')}
-            className="w-full bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-lg transition-colors flex justify-between items-center"
-          >
-            <span className="flex items-center">
-              <Newspaper size={18} className="mr-2" />
-              News
-            </span>
-            <ChevronRight size={18} />
-          </button>
-          <button
-            onClick={() => navigate('/stargazing')}
-            className="w-full bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-lg transition-colors flex justify-between items-center"
-          >
-            <span className="flex items-center">
-              <Star size={18} className="mr-2" />
-              Stargazing
-            </span>
-            <ChevronRight size={18} />
-          </button>
-
-          <button
-            onClick={() => navigate('/telescope')}
-            className="w-full bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-lg transition-colors flex justify-between items-center"
-          >
-            <span className="flex items-center">
-              <Telescope size={18} className="mr-2" />
-              Telescopes
-            </span>
-            <ChevronRight size={18} />
-          </button>
-        </div>
-
-        <button
-          onClick={handleLogout}
-          className="w-full bg-gradient-to-r from-[#bd0221] via-[#B3001F] to-[#4D000A] hover:from-red-700 hover:to-red-900 text-white px-4 py-3 rounded-lg transition-colors flex items-center justify-center"
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="relative p-[2px] rounded-xl overflow-hidden"
         >
-          <LogOut size={18} className="mr-2" />
-          Sign Out
-        </button>
-      </div>
-    </motion.div>
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,_hsl(283,99.2%,53.5%),_hsl(311,75.1%,51.2%),_hsl(330,85.1%,60.6%),_hsl(353,94.8%,69.8%),_hsl(17.6,100%,68.6%))] animate-text" />
 
+          <div className="relative bg-[#0d0c0d] p-6 rounded-xl text-left w-full h-full z-10">
+            <div className="flex items-center mb-6">
+              {auth.currentUser?.photoURL ? (
+                <img
+                  src={auth.currentUser.photoURL}
+                  alt="Profile"
+                  className="w-16 h-16 rounded-full border-2 border-cyan-600"
+                />
+              ) : (
+                <div className="w-16 h-16 rounded-full bg-purple-900 flex items-center justify-center text-2xl font-bold text-white">
+                  {profile.name?.charAt(0).toUpperCase() || 'U'}
+                </div>
+              )}
+              <div className="ml-4">
+                <h2 className="text-xl font-semibold text-pink-500">
+                  {profile.name}
+                </h2>
+                <p className="text-sm text-fuchsia-500">
+                  {auth.currentUser?.email}
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-3 mb-6">
+              <button
+                onClick={() => navigate('/events')}
+                className="w-full bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-lg transition-colors flex justify-between items-center"
+              >
+                <span className="flex items-center">
+                  <Calendar size={18} className="mr-2" />
+                  Events
+                </span>
+                <ChevronRight size={18} />
+              </button>
+              <button
+                onClick={() => navigate('/news')}
+                className="w-full bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-lg transition-colors flex justify-between items-center"
+              >
+                <span className="flex items-center">
+                  <Newspaper size={18} className="mr-2" />
+                  News
+                </span>
+                <ChevronRight size={18} />
+              </button>
+              <button
+                onClick={() => navigate('/stargazing')}
+                className="w-full bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-lg transition-colors flex justify-between items-center"
+              >
+                <span className="flex items-center">
+                  <Star size={18} className="mr-2" />
+                  Stargazing
+                </span>
+                <ChevronRight size={18} />
+              </button>
+
+              <button
+                onClick={() => navigate('/telescope')}
+                className="w-full bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-lg transition-colors flex justify-between items-center"
+              >
+                <span className="flex items-center">
+                  <Telescope size={18} className="mr-2" />
+                  Telescopes
+                </span>
+                <ChevronRight size={18} />
+              </button>
+            </div>
+
+            <button
+              onClick={handleLogout}
+              className="w-full bg-gradient-to-r from-[#bd0221] via-[#B3001F] to-[#4D000A] hover:from-red-700 hover:to-red-900 text-white px-4 py-3 rounded-lg transition-colors flex items-center justify-center"
+            >
+              <LogOut size={18} className="mr-2" />
+              Sign Out
+            </button>
+          </div>
+        </motion.div>
       )}
-
-      {authChecked && !profile && !loading && !location.search.includes('from=') && (
-        <p className="mt-4 text-gray-400">Please sign in to view your profile.</p>
-      )}
-
-
-
     </div>
   );
 }

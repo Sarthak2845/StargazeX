@@ -23,7 +23,7 @@ export default function UserProfile() {
 
   const fetchProfile = async (token) => {
     try {
-      const res = await axios.get('http://localhost:3000/api/user/profile', {
+      const res = await axios.get('https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/user/profile', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setProfile(res.data);
@@ -67,7 +67,7 @@ export default function UserProfile() {
       sessionStorage.setItem('token', token);
 
       await axios.post(
-        'http://localhost:3000/api/user/register',
+        'https://stargaze-x-backend-avinashshetty123s-projects.vercel.app//api/user/register',
         { name: user.displayName },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -10,7 +10,7 @@ const [loading, setLoading] = useState(true);
     window.scrollTo(0, 0);
     const fetchNews = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/news');
+        const res = await axios.get('https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/news');
         setNews(res.data);
       } catch (err) {
         console.error('Error fetching news:', err);

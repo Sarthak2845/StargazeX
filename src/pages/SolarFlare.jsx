@@ -21,7 +21,7 @@ export default function SolarFlare() {
   const fetchFeatures = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:3000/api/model/features');
+      const response = await axios.get('https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/model/features');
       setFeatures(response.data.features);
       setLoading(false);
     } catch (err) {
@@ -56,7 +56,7 @@ export default function SolarFlare() {
         };
       }
 
-      const response = await axios.post(`http://localhost:3000/api/model${endpoint}`, inputData);
+      const response = await axios.post(`https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/model${endpoint}`, inputData);
       setPrediction(response.data);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to get prediction');

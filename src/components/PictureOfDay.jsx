@@ -7,7 +7,7 @@ const PictureOfDay = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/pod')
+    fetch('https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/pod')
       .then(res => res.json())
       .then(json => {
         setData(json);

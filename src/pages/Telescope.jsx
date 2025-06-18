@@ -42,7 +42,7 @@ export default function TelescopeManager() {
 
   const fetchTelescopeTypes = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/telescope/types');
+      const res = await axios.get('https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/telescope/types');
       setTypes(res.data);
     } catch (err) {
       console.error('Failed to fetch telescope types:', err);
@@ -52,7 +52,7 @@ export default function TelescopeManager() {
   const fetchMyTelescopes = async () => {
     try {
       const token = await getToken();
-      const res = await axios.get('http://localhost:3000/api/telescope/my-telescopes', {
+      const res = await axios.get('https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/telescope/my-telescopes', {
         headers: {
           Authorization: `Bearer ${token}`,
           'Cache-Control': 'no-store',
@@ -68,7 +68,7 @@ export default function TelescopeManager() {
 
   const fetchAllTelescopes = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/telescope/all');
+      const res = await axios.get('https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/telescope/all');
       setAllTelescopes(res.data);
     } catch (err) {
       console.error('Failed to fetch all telescopes:', err);
@@ -100,7 +100,7 @@ export default function TelescopeManager() {
     try {
       const token = await getToken();
       await axios.post(
-        'http://localhost:3000/api/telescope/register',
+        'https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/telescope/register',
         form,
         {
           headers: { Authorization: `Bearer ${token}` }
@@ -143,7 +143,7 @@ export default function TelescopeManager() {
     }
     
     try {
-      const res = await axios.get(`http://localhost:3000/api/telescope/recommendations?objectType=${objectType}`);
+      const res = await axios.get(`https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/telescope/recommendations?objectType=${objectType}`);
       setRecommendations(res.data);
     } catch (err) {
       console.error('Failed to fetch recommendations:', err);

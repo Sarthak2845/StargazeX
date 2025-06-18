@@ -32,7 +32,7 @@ export default function StargazingConditions() {
   const fetchUpcomingEvents = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:3000/api/celestial/upcoming-events');
+      const res = await axios.get('https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/celestial/upcoming-events');
       setUpcomingEvents(res.data);
     } catch (err) {
       console.error('Failed to fetch upcoming events:', err);
@@ -46,7 +46,7 @@ export default function StargazingConditions() {
     try {
       setLoading(true);
       const res = await axios.get(
-        `http://localhost:3000/api/celestial/stargazing-conditions?date=${date}&location=${encodeURIComponent(location)}`
+        `https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/celestial/stargazing-conditions?date=${date}&location=${encodeURIComponent(location)}`
       );
       setConditions(res.data);
     } catch (err) {

@@ -40,7 +40,7 @@ const fetchLocalEvents = async () => {
     
     // Build query string conditionally
     const query = location ? `?location=${encodeURIComponent(location)}` : '';
-    const res = await axios.get(`http://localhost:3000/api/events/local${query}`);
+    const res = await axios.get(`https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/events/local${query}`);
     
     // Filter out past events, only show upcoming events
     const now = new Date();
@@ -65,7 +65,7 @@ const fetchLocalEvents = async () => {
       const token = await getToken();
       if (!token) return;
       
-      const res = await axios.get('http://localhost:3000/api/events/joined', {
+      const res = await axios.get('https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/events/joined', {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -86,7 +86,7 @@ const fetchLocalEvents = async () => {
   // Fetch event details
   const fetchEventDetails = async (eventId) => {
     try {
-      const res = await axios.get(`http://localhost:3000/api/events/${eventId}`);
+      const res = await axios.get(`https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/events/${eventId}`);
       setSelectedEvent(res.data);
     } catch (err) {
       console.error('Failed to fetch event details:', err);
@@ -105,7 +105,7 @@ const fetchLocalEvents = async () => {
       }
       
       await axios.post(
-        'http://localhost:3000/api/events/create',
+        'https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/events/create',
         eventForm,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -151,7 +151,7 @@ const fetchLocalEvents = async () => {
       }
       
       await axios.post(
-        `http://localhost:3000/api/events/join/${eventId}`,
+        `https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/events/join/${eventId}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -179,7 +179,7 @@ const fetchLocalEvents = async () => {
       if (!token) return;
       
       await axios.post(
-        `http://localhost:3000/api/events/leave/${eventId}`,
+        `https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/events/leave/${eventId}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -202,7 +202,7 @@ const fetchLocalEvents = async () => {
       if (!token) return;
       
       await axios.delete(
-        `http://localhost:3000/api/events/${eventId}`,
+        `https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/events/${eventId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
@@ -230,7 +230,7 @@ const fetchLocalEvents = async () => {
       }
       
       await axios.post(
-        `http://localhost:3000/api/events/${eventId}/comments`,
+        `https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/events/${eventId}/comments`,
         { text: comment },
         { headers: { Authorization: `Bearer ${token}` } }
       );

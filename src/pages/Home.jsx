@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { CalendarDays, Rocket, Telescope, Newspaper, Brush, Cog, MapPin, Camera, BookOpen, Cloud } from 'lucide-react';
+import { CalendarDays, Rocket, Telescope, Newspaper, Sun, Brush, Cog, MapPin, Camera, BookOpen, Cloud } from 'lucide-react';
 import SpotlightCard from '../components/SpotlightCard';
 import { Link } from 'react-router';
 import { motion } from 'framer-motion';
@@ -64,7 +64,7 @@ const Home = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}>
-        {/* Card 1 */}
+        {/* Card 1 - Stargazing upcoming events*/}
         <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%]" spotlightColor="rgba(255, 1, 132, 0.3)">
           <Link to="/stargazing" state={{ triggeredBy: 'card' }}>
             <div>
@@ -79,7 +79,7 @@ const Home = () => {
           </Link>
         </SpotlightCard>
 
-        {/* Card 2 */}
+        {/* Card 2 - Events*/}
         <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%]" spotlightColor="rgba(0, 255, 243, 0.3)">
           <Link to="/events">
             <div>
@@ -94,8 +94,8 @@ const Home = () => {
           </Link>
         </SpotlightCard>
 
-        {/* Card 3 Weather Forecasts*/}
-        <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%]" spotlightColor="rgba(50, 205, 50, 0.3)">
+        {/* Card 3 - Weather Forecasts*/}
+        <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%]" spotlightColor="rgba(73, 0, 255, 0.3)">
           <Link to="/stargazing">
             <div>
               <Cloud className="inline m-3" size={60} />
@@ -125,7 +125,7 @@ const Home = () => {
         </SpotlightCard>
                 
         {/* Card 5 - News */}
-        <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%]" spotlightColor="rgba(73, 0, 255, 0.3)">
+        <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%]" spotlightColor="rgba(50, 205, 50, 0.3)">
           <Link to="/news">
             <div>
               <Newspaper className="inline m-3" size={60} />
@@ -134,6 +134,20 @@ const Home = () => {
               </h2>
               <p className="text-sm sm:text-lg font-['Poppins']">
                 Never miss a discovery. Get daily updates from trusted space sources.
+              </p>
+            </div>
+          </Link>
+        </SpotlightCard>
+        {/* Card 6 - Solar Flare Prediction */}
+        <SpotlightCard className="p-6 w-full sm:w-[90%] md:w-[45%] lg:w-[30%]" spotlightColor="rgba(235, 235, 0, 0.3)">
+          <Link to="/solarflare">
+            <div>
+              <Sun className="inline m-3" size={60} />
+              <h2 className="text-xl sm:text-2xl font-bold font-['Orbitron'] mb-4 bg-linear-to-r from-pink-500 via-red-500 to-orange-500 bg-clip-text text-transparent">
+                Solar Flare Predictions
+              </h2>
+              <p className="text-sm sm:text-lg font-['Poppins']">
+                Stay ahead of the storm. Get early warnings of solar flares with smart, real-time predictions.
               </p>
             </div>
           </Link>

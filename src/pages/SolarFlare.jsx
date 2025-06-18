@@ -13,6 +13,7 @@ export default function SolarFlare() {
   const [predictionType, setPredictionType] = useState('location'); // 'location' or 'coordinates'
 
   useEffect(() => {
+    window.scrollTo(0,0);
     fetchFeatures();
     setTimestamp(new Date().toISOString().slice(0, 16));
   }, []);

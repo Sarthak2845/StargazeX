@@ -67,7 +67,7 @@ export default function UserProfile() {
       sessionStorage.setItem('token', token);
 
       await axios.post(
-        'https://stargaze-x-backend-avinashshetty123s-projects.vercel.app//api/user/register',
+        'https://stargaze-x-backend-avinashshetty123s-projects.vercel.app/api/user/register',
         { name: user.displayName },
         { headers: { Authorization: `Bearer ${token}` } }
       );
